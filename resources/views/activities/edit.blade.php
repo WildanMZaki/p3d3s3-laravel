@@ -4,7 +4,7 @@
 <div class="card">
     <h2 style="margin-bottom: 1.25rem;">Ubah Kegiatan: {{ $activity->title }}</h2>
 
-    <form action="{{ route('activities.update', $activity) }}" method="POST">
+    <form action="{{ route('activities.update', $activity) }}" method="POST" enctype="multipart/form-data">
         @method('PUT')
         @include('activities._form')
 

@@ -4,7 +4,7 @@
 <div class="card">
     <h2 style="margin-bottom: 1.25rem;">Tambah Kegiatan Baru</h2>
 
-    <form action="{{ route('activities.store') }}" method="POST">
+    <form action="{{ route('activities.store') }}" method="POST" enctype="multipart/form-data">
         @include('activities._form')
 
         <div class="actions">

@@ -11,6 +11,7 @@ use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -58,7 +59,14 @@ class ActivityController extends Controller
         StoreActivityRequest $request,
         ActivityService $service
     ): RedirectResponse {
-        $activity = $service->create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('poster')) {
+            $data['poster_path'] = $request->file('poster')->store('posters', 'public');
+        }
+        unset($data['poster']);
+
+        $activity = $service->create($data);
 
         return to_route('activities.show', $activity)
             ->with('success', 'Kegiatan berhasil dibuat.');
@@ -92,8 +100,18 @@ class ActivityController extends Controller
         Activity $activity,
         ActivityService $service
     ): RedirectResponse {
+        $data = $request->validated();
+
+        if ($request->hasFile('poster')) {
+            if ($activity->poster_path && Storage::disk('public')->exists($activity->poster_path)) {
+                Storage::disk('public')->delete($activity->poster_path);
+            }
+            $data['poster_path'] = $request->file('poster')->store('posters', 'public');
+        }
+        unset($data['poster']);
+
         try {
-            $service->update($activity, $request->validated());
+            $service->update($activity, $data);
         } catch (DomainException $exception) {
             return back()
                 ->withErrors(['status' => $exception->getMessage()])

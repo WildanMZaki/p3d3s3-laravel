@@ -124,3 +124,22 @@
         <p class="error">{{ $message }}</p>
     @enderror
 </div>
+
+<div class="form-group">
+    <label for="poster">Poster Kegiatan (Opsional, JPG/PNG/WebP, Maks. 2MB)</label>
+    <input
+        type="file"
+        id="poster"
+        name="poster"
+        accept="image/png,image/jpeg,image/webp,image/jpg"
+    >
+    @if (!empty($activity->poster_path))
+        <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+            <img src="{{ asset('storage/' . $activity->poster_path) }}" alt="Poster saat ini" style="width: 70px; height: 70px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border-color);">
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Poster saat ini terpasang. Unggah file baru untuk menggantinya.</span>
+        </div>
+    @endif
+    @error('poster')
+        <p class="error">{{ $message }}</p>
+    @enderror
+</div>

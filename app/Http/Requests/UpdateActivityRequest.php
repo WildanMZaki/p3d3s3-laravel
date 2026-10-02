@@ -39,6 +39,7 @@ class UpdateActivityRequest extends FormRequest
             'end_at' => ['required', 'date', 'after_or_equal:start_at'],
             'location' => ['nullable', 'string', 'max:100'],
             'capacity' => ['required', 'integer', 'min:1', 'max:500'],
+            'poster' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ];
     }
 }

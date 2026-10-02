@@ -64,17 +64,21 @@
 @forelse ($activities as $activity)
     <article class="card">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-            <div>
-                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                    <span style="font-size: 0.75rem; font-weight: 700; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; border: 1px solid #cbd5e1;">
-                        {{ $activity->code }}
-                    </span>
-                    <h3 style="margin: 0;">
-                        <a href="{{ route('activities.show', $activity) }}" style="color: #0f172a; text-decoration: none;">
-                            {{ $activity->title }}
-                        </a>
-                    </h3>
-                </div>
+            <div style="display: flex; gap: 0.875rem; align-items: flex-start;">
+                @if ($activity->poster_path)
+                    <img src="{{ asset('storage/' . $activity->poster_path) }}" alt="Poster {{ $activity->title }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border-color); flex-shrink: 0; margin-top: 2px;">
+                @endif
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                        <span style="font-size: 0.75rem; font-weight: 700; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; border: 1px solid #cbd5e1;">
+                            {{ $activity->code }}
+                        </span>
+                        <h3 style="margin: 0;">
+                            <a href="{{ route('activities.show', $activity) }}" style="color: #0f172a; text-decoration: none;">
+                                {{ $activity->title }}
+                            </a>
+                        </h3>
+                    </div>
                 <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.5rem;">
                     Kategori: <strong>{{ $activity->category?->name ?? 'Tanpa Kategori' }}</strong> &bull; 
                     Waktu: <strong>{{ $activity->start_at?->format('d M Y') }}</strong> s.d. <strong>{{ $activity->end_at?->format('d M Y') }}</strong> &bull;

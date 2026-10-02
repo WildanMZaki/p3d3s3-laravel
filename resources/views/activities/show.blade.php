@@ -19,6 +19,12 @@
         </span>
     </div>
 
+    @if ($activity->poster_path)
+        <div style="margin-bottom: 1.5rem; text-align: center;">
+            <img src="{{ asset('storage/' . $activity->poster_path) }}" alt="Poster {{ $activity->title }}" style="max-width: 100%; max-height: 360px; border-radius: 8px; border: 1px solid var(--border-color); object-fit: cover;">
+        </div>
+    @endif
+
     <div style="margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
         <div>
             <p><strong>Waktu Pelaksanaan:</strong></p>
