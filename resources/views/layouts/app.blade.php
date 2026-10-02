@@ -165,6 +165,9 @@
 
         input[type="text"],
         input[type="date"],
+        input[type="number"],
+        input[type="email"],
+        input[type="file"],
         textarea,
         select {
             width: 100%;
@@ -182,6 +185,145 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .form-row-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .form-row-2-1 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .form-row-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-row-2-1 {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .search-filter-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            align-items: flex-end;
+        }
+
+        @media (min-width: 768px) {
+            .filter-grid {
+                grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            }
+        }
+
+        .pagination-container {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .pagination-container nav {
+            width: 100%;
+        }
+
+        /* Sembunyikan baris duplikat mobile agar tidak bertumpuk */
+        .pagination-container nav > div:first-child {
+            display: none;
+        }
+
+        /* Baris utama pagination */
+        .pagination-container nav > div:last-child {
+            display: flex !important;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        @media (min-width: 640px) {
+            .pagination-container nav > div:last-child {
+                flex-direction: row;
+            }
+        }
+
+        .pagination-container p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .pagination-container p span {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .pagination-container span.shadow-sm {
+            display: inline-flex;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .pagination-container span.shadow-sm a,
+        .pagination-container span.shadow-sm span > span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2.25rem;
+            height: 2.25rem;
+            padding: 0 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-main);
+            text-decoration: none;
+            background: #ffffff;
+            border-right: 1px solid var(--border-color);
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+
+        .pagination-container span.shadow-sm > :last-child,
+        .pagination-container span.shadow-sm > :last-child > span {
+            border-right: none !important;
+        }
+
+        .pagination-container span.shadow-sm a:hover {
+            background-color: #f1f5f9;
+            color: var(--primary);
+        }
+
+        .pagination-container span.shadow-sm [aria-current="page"] span {
+            background-color: var(--primary) !important;
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+
+        .pagination-container span.shadow-sm [aria-disabled="true"] span {
+            color: #94a3b8;
+            background-color: #f8fafc;
+            cursor: not-allowed;
+        }
+
+        .pagination-container svg {
+            width: 1.125rem;
+            height: 1.125rem;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         .error {
@@ -228,11 +370,12 @@
     <div class="container">
         <header>
             <div>
-                <h1><a href="{{ route('activities.index') }}" style="text-decoration: none; color: inherit;">Activity Manager v1</a></h1>
-                <p style="color: var(--text-muted); font-size: 0.875rem;">Modul 3 Framework in Programming - Laravel Basic</p>
+                <h1><a href="{{ route('activities.index') }}" style="text-decoration: none; color: inherit;">Activity Manager</a></h1>
             </div>
             <nav>
                 <a href="{{ route('activities.index') }}" class="btn btn-secondary">Daftar Kegiatan</a>
+                <a href="{{ route('categories.index') }}" class="btn btn-secondary">Kategori</a>
+                <a href="{{ route('activities.trash') }}" class="btn btn-secondary">Tong Sampah</a>
                 <a href="{{ route('activities.create') }}" class="btn btn-primary">+ Tambah Kegiatan</a>
             </nav>
         </header>
