@@ -193,6 +193,22 @@
             gap: 1rem;
         }
 
+        .form-row-2-1 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .form-row-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-row-2-1 {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
         .search-filter-card {
             background: #fff;
             border: 1px solid var(--border-color);
