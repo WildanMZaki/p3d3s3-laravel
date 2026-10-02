@@ -1,12 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+<div style="margin-bottom: 1.5rem;">
     <h2>Daftar Kegiatan</h2>
-    <div style="display: flex; gap: 0.5rem;">
-        <a href="{{ route('categories.index') }}" class="btn btn-secondary">Kelola Kategori</a>
-        <a href="{{ route('activities.create') }}" class="btn btn-primary">+ Tambah Kegiatan</a>
-    </div>
 </div>
 
 {{-- Bar Pencarian, Filter Kombinasi, dan Pengurutan --}}

@@ -298,6 +298,7 @@
             <nav>
                 <a href="{{ route('activities.index') }}" class="btn btn-secondary">Daftar Kegiatan</a>
                 <a href="{{ route('categories.index') }}" class="btn btn-secondary">Kategori</a>
+                <a href="{{ route('activities.trash') }}" class="btn btn-secondary">Tong Sampah</a>
                 <a href="{{ route('activities.create') }}" class="btn btn-primary">+ Tambah Kegiatan</a>
             </nav>
         </header>

@@ -8,6 +8,9 @@ Route::get('/', function () {
     return redirect()->route('activities.index');
 });
 
+Route::get('activities/trash', [ActivityController::class, 'trash'])->name('activities.trash');
+Route::patch('activities/{id}/restore', [ActivityController::class, 'restore'])->name('activities.restore');
+
 Route::resource('activities', ActivityController::class);
 Route::resource('categories', CategoryController::class)->only(['index', 'store', 'destroy']);
 
