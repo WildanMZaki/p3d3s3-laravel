@@ -165,6 +165,9 @@
 
         input[type="text"],
         input[type="date"],
+        input[type="number"],
+        input[type="email"],
+        input[type="file"],
         textarea,
         select {
             width: 100%;
@@ -182,6 +185,28 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .form-row-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .form-row-2-1 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .form-row-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-row-2-1 {
+                grid-template-columns: 2fr 1fr;
+            }
         }
 
         .error {
@@ -228,11 +253,11 @@
     <div class="container">
         <header>
             <div>
-                <h1><a href="{{ route('activities.index') }}" style="text-decoration: none; color: inherit;">Activity Manager v1</a></h1>
-                <p style="color: var(--text-muted); font-size: 0.875rem;">Modul 3 Framework in Programming - Laravel Basic</p>
+                <h1><a href="{{ route('activities.index') }}" style="text-decoration: none; color: inherit;">Activity Manager</a></h1>
             </div>
             <nav>
                 <a href="{{ route('activities.index') }}" class="btn btn-secondary">Daftar Kegiatan</a>
+                <a href="{{ route('categories.index') }}" class="btn btn-secondary">Kategori</a>
                 <a href="{{ route('activities.create') }}" class="btn btn-primary">+ Tambah Kegiatan</a>
             </nav>
         </header>

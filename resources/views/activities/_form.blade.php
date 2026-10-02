@@ -1,5 +1,40 @@
 @csrf
 
+<div class="form-row-2">
+    <div class="form-group">
+        <label for="code">Kode Kegiatan</label>
+        <input
+            type="text"
+            id="code"
+            name="code"
+            value="{{ old('code', $activity->code ?? '') }}"
+            placeholder="Contoh: ACT-001"
+            required
+        >
+        @error('code')
+            <p class="error">{{ $message }}</p>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="category_id">Kategori Kegiatan</label>
+        <select name="category_id" id="category_id" required>
+            <option value="">-- Pilih Kategori --</option>
+            @foreach ($categories as $category)
+                <option
+                    value="{{ $category->id }}"
+                    @selected(old('category_id', $activity->category_id ?? '') == $category->id)
+                >
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
+        @error('category_id')
+            <p class="error">{{ $message }}</p>
+        @enderror
+    </div>
+</div>
+
 <div class="form-group">
     <label for="title">Judul Kegiatan</label>
     <input
@@ -7,7 +42,7 @@
         id="title"
         name="title"
         value="{{ old('title', $activity->title ?? '') }}"
-        placeholder="Masukkan judul kegiatan (5-100 karakter)"
+        placeholder="Masukkan judul kegiatan (5-150 karakter)"
         required
     >
     @error('title')
@@ -15,59 +50,75 @@
     @enderror
 </div>
 
-<div class="form-group">
-    <label for="category">Kategori</label>
-    <input
-        type="text"
-        id="category"
-        name="category"
-        value="{{ old('category', $activity->category ?? '') }}"
-        placeholder="Contoh: Workshop, Seminar, Praktikum"
-        required
-    >
-    @error('category')
-        <p class="error">{{ $message }}</p>
-    @enderror
+<div class="form-row-2">
+    <div class="form-group">
+        <label for="start_at">Tanggal Mulai</label>
+        <input
+            type="date"
+            id="start_at"
+            name="start_at"
+            value="{{ old('start_at', isset($activity->start_at) ? $activity->start_at->format('Y-m-d') : '') }}"
+            required
+        >
+        @error('start_at')
+            <p class="error">{{ $message }}</p>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="end_at">Tanggal Selesai</label>
+        <input
+            type="date"
+            id="end_at"
+            name="end_at"
+            value="{{ old('end_at', isset($activity->end_at) ? $activity->end_at->format('Y-m-d') : '') }}"
+            required
+        >
+        @error('end_at')
+            <p class="error">{{ $message }}</p>
+        @enderror
+    </div>
+</div>
+
+<div class="form-row-2-1">
+    <div class="form-group">
+        <label for="location">Lokasi Kegiatan</label>
+        <input
+            type="text"
+            id="location"
+            name="location"
+            value="{{ old('location', $activity->location ?? '') }}"
+            placeholder="Contoh: Auditorium Gedung D / Daring Zoom"
+        >
+        @error('location')
+            <p class="error">{{ $message }}</p>
+        @enderror
+    </div>
+
+    <div class="form-group">
+        <label for="capacity">Kapasitas Peserta (Maks. 500)</label>
+        <input
+            type="number"
+            id="capacity"
+            name="capacity"
+            min="1"
+            max="500"
+            value="{{ old('capacity', $activity->capacity ?? 50) }}"
+            required
+        >
+        @error('capacity')
+            <p class="error">{{ $message }}</p>
+        @enderror
+    </div>
 </div>
 
 <div class="form-group">
-    <label for="activity_date">Tanggal Kegiatan</label>
-    <input
-        type="date"
-        id="activity_date"
-        name="activity_date"
-        value="{{ old('activity_date', isset($activity->activity_date) ? $activity->activity_date->format('Y-m-d') : '') }}"
-        required
-    >
-    @error('activity_date')
-        <p class="error">{{ $message }}</p>
-    @enderror
-</div>
-
-<div class="form-group">
-    <label for="status">Status</label>
-    <select name="status" id="status" required>
-        @foreach (['Planned', 'Ongoing', 'Done'] as $optStatus)
-            <option
-                value="{{ $optStatus }}"
-                @selected(old('status', $activity->status ?? 'Planned') === $optStatus)
-            >
-                {{ $optStatus }}
-            </option>
-        @endforeach
-    </select>
-    @error('status')
-        <p class="error">{{ $message }}</p>
-    @enderror
-</div>
-
-<div class="form-group">
-    <label for="description">Deskripsi Ringkas (Opsional)</label>
+    <label for="description">Deskripsi Lengkap (Opsional)</label>
     <textarea
         id="description"
         name="description"
         rows="4"
-        placeholder="Tuliskan keterangan kegiatan jika ada"
+        placeholder="Tuliskan keterangan detail mengenai kegiatan ini..."
     >{{ old('description', $activity->description ?? '') }}</textarea>
     @error('description')
         <p class="error">{{ $message }}</p>

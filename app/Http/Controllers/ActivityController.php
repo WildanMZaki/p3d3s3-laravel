@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreActivityRequest;
 use App\Http\Requests\UpdateActivityRequest;
 use App\Models\Activity;
+use App\Models\Category;
 use App\Services\ActivityService;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
@@ -21,11 +22,14 @@ class ActivityController extends Controller
         $status = $request->query('status');
 
         $activities = Activity::query()
+            ->with('category')
             ->filterStatus($status)
-            ->orderBy('activity_date')
+            ->orderBy('start_at', 'desc')
             ->get();
 
-        return view('activities.index', compact('activities', 'status'));
+        $categories = Category::all();
+
+        return view('activities.index', compact('activities', 'status', 'categories'));
     }
 
     /**
@@ -33,7 +37,9 @@ class ActivityController extends Controller
      */
     public function create(): View
     {
-        return view('activities.create');
+        $categories = Category::all();
+
+        return view('activities.create', compact('categories'));
     }
 
     /**
@@ -54,6 +60,8 @@ class ActivityController extends Controller
      */
     public function show(Activity $activity): View
     {
+        $activity->load('category');
+
         return view('activities.show', compact('activity'));
     }
 
@@ -62,7 +70,9 @@ class ActivityController extends Controller
      */
     public function edit(Activity $activity): View
     {
-        return view('activities.edit', compact('activity'));
+        $categories = Category::all();
+
+        return view('activities.edit', compact('activity', 'categories'));
     }
 
     /**

@@ -8,6 +8,9 @@ use DomainException;
 class ActivityService
 {
     private const TRANSITIONS = [
+        'draft' => ['draft', 'published'],
+        'published' => ['published', 'completed'],
+        'completed' => ['completed'],
         'Planned' => ['Planned', 'Ongoing'],
         'Ongoing' => ['Ongoing', 'Done'],
         'Done' => ['Done'],

@@ -2,11 +2,16 @@
 
 @section('content')
 <div class="card">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
         <div>
-            <h2>{{ $activity->title }}</h2>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                <span style="font-size: 0.8rem; font-weight: 700; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; border: 1px solid #cbd5e1;">
+                    {{ $activity->code }}
+                </span>
+                <h2 style="margin: 0;">{{ $activity->title }}</h2>
+            </div>
             <span style="color: var(--text-muted); font-size: 0.875rem;">
-                Kategori: <strong>{{ $activity->category }}</strong>
+                Kategori: <strong>{{ $activity->category?->name ?? 'Tanpa Kategori' }}</strong>
             </span>
         </div>
         <span class="badge badge-{{ strtolower($activity->status) }}">
@@ -14,16 +19,34 @@
         </span>
     </div>
 
+    <div style="margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div>
+            <p><strong>Waktu Pelaksanaan:</strong></p>
+            <p style="color: #334155;">{{ $activity->start_at?->format('d F Y') }} s.d. {{ $activity->end_at?->format('d F Y') }}</p>
+        </div>
+        <div>
+            <p><strong>Lokasi:</strong></p>
+            <p style="color: #334155;">{{ $activity->location ?: 'Belum ditentukan' }}</p>
+        </div>
+        <div>
+            <p><strong>Kapasitas Peserta:</strong></p>
+            <p style="color: #334155;">{{ $activity->capacity }} peserta</p>
+        </div>
+        <div>
+            <p><strong>Status Saat Ini:</strong></p>
+            <p style="color: #334155; text-transform: capitalize;">{{ $activity->status }}</p>
+        </div>
+    </div>
+
     <div style="margin-bottom: 1.5rem;">
-        <p><strong>Tanggal Pelaksanaan:</strong> {{ $activity->activity_date->format('d F Y') }}</p>
-        <p style="margin-top: 0.75rem;"><strong>Deskripsi:</strong></p>
-        <p style="color: #334155; margin-top: 0.25rem;">
+        <p><strong>Deskripsi Kegiatan:</strong></p>
+        <p style="color: #334155; margin-top: 0.25rem; white-space: pre-line;">
             {{ $activity->description ?: 'Tidak ada deskripsi tambahan.' }}
         </p>
     </div>
 
     <div style="font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 0.75rem; margin-bottom: 1.5rem;">
-        <p>Dibuat: {{ $activity->created_at->format('d M Y H:i') }} | Terakhir diupdate: {{ $activity->updated_at->format('d M Y H:i') }}</p>
+        <p>Dibuat: {{ $activity->created_at?->format('d M Y H:i') }} | Terakhir diupdate: {{ $activity->updated_at?->format('d M Y H:i') }}</p>
     </div>
 
     <div class="actions">
