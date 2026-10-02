@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Activity;
+use DomainException;
 use Illuminate\Validation\ValidationException;
 
 class ActivityService
@@ -20,6 +21,9 @@ class ActivityService
 
     public function update(Activity $activity, array $data): Activity
     {
+        $nextStatus = $data['status'] ?? $activity->status;
+        $this->ensureValidTransition($activity->status, $nextStatus);
+
         $activity->update($data);
 
         return $activity->refresh();
@@ -28,6 +32,17 @@ class ActivityService
     public function delete(Activity $activity): bool
     {
         return (bool) $activity->delete();
+    }
+
+    private function ensureValidTransition(string $current, string $next): void
+    {
+        $allowed = self::TRANSITIONS[$current] ?? [];
+
+        if (! in_array($next, $allowed, true)) {
+            throw new DomainException(
+                "Transisi status dari {$current} ke {$next} tidak diizinkan."
+            );
+        }
     }
 
     public function publish(Activity $activity): Activity
