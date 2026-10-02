@@ -10,6 +10,7 @@ use App\Services\ActivityService;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -20,14 +21,20 @@ class ActivityController extends Controller
      */
     public function index(Request $request): View
     {
+        // DB::enableQueryLog();
+
         $activities = Activity::query()
-            ->with('category')
+            ->with('category') // Eager loading
             ->search($request->query('search'))
             ->filterCategory($request->query('category_id'))
             ->filterStatus($request->query('status'))
             ->sortDate($request->query('sort'))
             ->paginate(10)
             ->withQueryString();
+
+        // Uncomment 2 baris ini untuk cek jumlah & isi query via dd():
+        // $activities->each(fn ($a) => $a->category?->name);
+        // dd(DB::getQueryLog());
 
         $categories = Category::all();
 
