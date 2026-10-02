@@ -232,21 +232,98 @@
         }
 
         .pagination-container {
-            margin-top: 1.5rem;
-            display: flex;
-            justify-content: center;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
         }
 
         .pagination-container nav {
-            display: flex;
-            gap: 0.25rem;
+            width: 100%;
+        }
+
+        /* Sembunyikan baris duplikat mobile agar tidak bertumpuk */
+        .pagination-container nav > div:first-child {
+            display: none;
+        }
+
+        /* Baris utama pagination */
+        .pagination-container nav > div:last-child {
+            display: flex !important;
+            flex-direction: column;
+            gap: 1rem;
             align-items: center;
-            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        @media (min-width: 640px) {
+            .pagination-container nav > div:last-child {
+                flex-direction: row;
+            }
+        }
+
+        .pagination-container p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .pagination-container p span {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .pagination-container span.shadow-sm {
+            display: inline-flex;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .pagination-container span.shadow-sm a,
+        .pagination-container span.shadow-sm span > span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2.25rem;
+            height: 2.25rem;
+            padding: 0 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-main);
+            text-decoration: none;
+            background: #ffffff;
+            border-right: 1px solid var(--border-color);
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+
+        .pagination-container span.shadow-sm > :last-child,
+        .pagination-container span.shadow-sm > :last-child > span {
+            border-right: none !important;
+        }
+
+        .pagination-container span.shadow-sm a:hover {
+            background-color: #f1f5f9;
+            color: var(--primary);
+        }
+
+        .pagination-container span.shadow-sm [aria-current="page"] span {
+            background-color: var(--primary) !important;
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+
+        .pagination-container span.shadow-sm [aria-disabled="true"] span {
+            color: #94a3b8;
+            background-color: #f8fafc;
+            cursor: not-allowed;
         }
 
         .pagination-container svg {
-            width: 1.25rem;
-            height: 1.25rem;
+            width: 1.125rem;
+            height: 1.125rem;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         .error {
