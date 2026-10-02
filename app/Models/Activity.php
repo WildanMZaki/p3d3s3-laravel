@@ -31,15 +31,34 @@ class Activity extends Model
         ];
     }
 
-    /**
-     * Scope a query to filter by valid activity status.
-     */
+    // Scopes
+    public function scopeSearch($query, ?string $keyword)
+    {
+        return $query->when($keyword, function ($query, $keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', "%{$keyword}%")
+                    ->orWhere('code', 'like', "%{$keyword}%");
+            });
+        });
+    }
+
+    public function scopeFilterCategory($query, ?int $categoryId)
+    {
+        return $query->when($categoryId, fn ($q) => $q->where('category_id', $categoryId));
+    }
+
     public function scopeFilterStatus($query, ?string $status)
     {
-        return $query->when(
-            in_array($status, ['Planned', 'Ongoing', 'Done'], true),
-            fn ($q) => $q->where('status', $status)
-        );
+        $allowed = ['draft', 'published', 'completed'];
+
+        return $query->when(in_array($status, $allowed, true), fn ($q) => $q->where('status', $status));
+    }
+
+    public function scopeSortDate($query, ?string $sort)
+    {
+        $direction = ($sort === 'oldest') ? 'asc' : 'desc';
+
+        return $query->orderBy('start_at', $direction);
     }
 
     // Relations

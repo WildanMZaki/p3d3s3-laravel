@@ -10,6 +10,7 @@ use App\Services\ActivityService;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ActivityController extends Controller
@@ -19,17 +20,18 @@ class ActivityController extends Controller
      */
     public function index(Request $request): View
     {
-        $status = $request->query('status');
-
         $activities = Activity::query()
             ->with('category')
-            ->filterStatus($status)
-            ->orderBy('start_at', 'desc')
-            ->get();
+            ->search($request->query('search'))
+            ->filterCategory($request->query('category_id'))
+            ->filterStatus($request->query('status'))
+            ->sortDate($request->query('sort'))
+            ->paginate(10)
+            ->withQueryString();
 
         $categories = Category::all();
 
-        return view('activities.index', compact('activities', 'status', 'categories'));
+        return view('activities.index', compact('activities', 'categories'));
     }
 
     /**
@@ -106,5 +108,37 @@ class ActivityController extends Controller
 
         return to_route('activities.index')
             ->with('success', 'Kegiatan berhasil dihapus.');
+    }
+
+    /**
+     * Publish a draft activity.
+     */
+    public function publish(
+        Activity $activity,
+        ActivityService $service
+    ): RedirectResponse {
+        try {
+            $service->publish($activity);
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors());
+        }
+
+        return back()->with('success', 'Kegiatan berhasil dipublikasikan.');
+    }
+
+    /**
+     * Mark a published activity as completed.
+     */
+    public function complete(
+        Activity $activity,
+        ActivityService $service
+    ): RedirectResponse {
+        try {
+            $service->complete($activity);
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors());
+        }
+
+        return back()->with('success', 'Kegiatan telah ditandai selesai.');
     }
 }

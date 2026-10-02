@@ -50,7 +50,25 @@
     </div>
 
     <div class="actions">
-        <a href="{{ route('activities.edit', $activity) }}" class="btn btn-primary">Ubah Kegiatan</a>
+        @if ($activity->status === 'draft')
+            <form action="{{ route('activities.publish', $activity) }}" method="POST" style="display: inline;">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn btn-primary" onclick="return confirm('Publikasikan kegiatan ini agar peserta dapat mendaftar?');">
+                    Publikasikan Kegiatan
+                </button>
+            </form>
+        @elseif ($activity->status === 'published')
+            <form action="{{ route('activities.complete', $activity) }}" method="POST" style="display: inline;">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn btn-primary" onclick="return confirm('Tandai kegiatan ini sebagai selesai? Status completed tidak dapat dibatalkan.');">
+                    Tandai Selesai
+                </button>
+            </form>
+        @endif
+
+        <a href="{{ route('activities.edit', $activity) }}" class="btn btn-secondary">Ubah Kegiatan</a>
         <form action="{{ route('activities.destroy', $activity) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kegiatan ini?');">
             @csrf
             @method('DELETE')
