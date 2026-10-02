@@ -18,6 +18,7 @@ class Activity extends Model
         'end_at',
         'location',
         'capacity',
+        'registered_count',
         'status',
         'poster_path',
     ];
@@ -28,6 +29,7 @@ class Activity extends Model
             'start_at' => 'date',
             'end_at' => 'date',
             'capacity' => 'integer',
+            'registered_count' => 'integer',
         ];
     }
 
@@ -65,5 +67,10 @@ class Activity extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class);
     }
 }

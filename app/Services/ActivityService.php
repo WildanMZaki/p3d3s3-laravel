@@ -3,7 +3,10 @@
 namespace App\Services;
 
 use App\Models\Activity;
+use App\Models\Registration;
 use DomainException;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class ActivityService
@@ -79,5 +82,41 @@ class ActivityService
         $activity->update(['status' => 'completed']);
 
         return $activity;
+    }
+
+    public function registerParticipant(Activity $activity, array $data): Registration
+    {
+        // Validasi status kegiatan
+        if ($activity->status !== 'published') {
+            throw new DomainException('Pendaftaran hanya dapat dilakukan untuk kegiatan yang berstatus published.');
+        }
+
+        // Validasi jadwal kegiatan
+        if ($activity->start_at && Carbon::parse($activity->start_at)->isPast()) {
+            throw new DomainException('Pendaftaran ditolak karena kegiatan sudah dimulai atau telah lewat.');
+        }
+
+        // Validasi kuota peserta
+        if ($activity->registered_count >= $activity->capacity) {
+            throw new DomainException('Pendaftaran ditolak karena kuota peserta telah penuh.');
+        }
+
+        // Mencegah pendaftaran duplikat
+        if ($activity->registrations()->where('email', $data['email'])->exists()) {
+            throw new DomainException('Email ini sudah terdaftar pada kegiatan tersebut.');
+        }
+
+        // Simpan pendaftaran dan update kapasitas secara atomik
+        return DB::transaction(function () use ($activity, $data) {
+            $registration = $activity->registrations()->create([
+                'participant_name' => $data['participant_name'],
+                'email' => $data['email'],
+                'registered_at' => now(),
+            ]);
+
+            $activity->increment('registered_count');
+
+            return $registration;
+        });
     }
 }

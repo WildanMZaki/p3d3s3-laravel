@@ -69,7 +69,7 @@ class ActivityController extends Controller
      */
     public function show(Activity $activity): View
     {
-        $activity->load('category');
+        $activity->load(['category', 'registrations']);
 
         return view('activities.show', compact('activity'));
     }
